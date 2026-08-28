@@ -21,6 +21,14 @@ export const courseService = {
     const res = await apiClient.delete(`/courses/${id}/`);
     return res.data;
   },
+  assignInstructor: async (courseId, facultyId) => {
+    const res = await apiClient.post(`/courses/${courseId}/assign-instructor/`, { faculty_id: facultyId });
+    return res.data;
+  },
+  getSyllabus: async (courseId) => {
+    const res = await apiClient.get(`/courses/${courseId}/syllabus/`);
+    return res.data;
+  },
 };
 
 export default courseService;

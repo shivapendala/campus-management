@@ -123,12 +123,17 @@ class Command(BaseCommand):
             student_objs.append(stu)
         self.stdout.write(self.style.SUCCESS('3. Initialized Student records.'))
 
-        # 5. Courses & Enrollments
+        # 4. Courses (CSE curriculum: Data Structures, DBMS, Operating Systems, Computer Networks, Machine Learning)
         courses_data = [
-            {'code': 'CS-101', 'title': 'Data Structures & Algorithms', 'dept': 'CS', 'instructor': faculty_map['FAC-CS-001'], 'credits': 4, 'capacity': 60},
-            {'code': 'CS-204', 'title': 'Distributed Cloud Architectures', 'dept': 'CS', 'instructor': faculty_map['FAC-CS-002'], 'credits': 3, 'capacity': 45},
-            {'code': 'EE-201', 'title': 'Embedded Microcontroller Systems', 'dept': 'EE', 'instructor': faculty_map['FAC-EE-001'], 'credits': 4, 'capacity': 40},
-            {'code': 'BA-102', 'title': 'Corporate Finance & Analytics', 'dept': 'BA', 'instructor': faculty_map['FAC-BA-001'], 'credits': 3, 'capacity': 50},
+            {'code': 'CSE-101', 'title': 'Data Structures & Algorithms', 'credits': 4, 'semester': 3, 'course_type': 'THEORY', 'department': dept_map.get('CSE'), 'instructor': faculty_objs[0] if faculty_objs else None},
+            {'code': 'CSE-202', 'title': 'Database Management Systems (DBMS)', 'credits': 4, 'semester': 4, 'course_type': 'THEORY', 'department': dept_map.get('CSE'), 'instructor': faculty_objs[1] if len(faculty_objs) > 1 else None},
+            {'code': 'CSE-301', 'title': 'Operating Systems', 'credits': 4, 'semester': 5, 'course_type': 'THEORY', 'department': dept_map.get('CSE'), 'instructor': faculty_objs[0] if faculty_objs else None},
+            {'code': 'CSE-302', 'title': 'Computer Networks', 'credits': 3, 'semester': 6, 'course_type': 'THEORY', 'department': dept_map.get('CSE'), 'instructor': faculty_objs[1] if len(faculty_objs) > 1 else None},
+            {'code': 'CSE-401', 'title': 'Machine Learning & Neural Networks', 'credits': 4, 'semester': 7, 'course_type': 'ELECTIVE', 'department': dept_map.get('CSE'), 'instructor': faculty_objs[0] if faculty_objs else None},
+            {'code': 'ECE-201', 'title': 'Digital Signal Processing', 'credits': 4, 'semester': 4, 'course_type': 'THEORY', 'department': dept_map.get('ECE'), 'instructor': None},
+            {'code': 'EEE-201', 'title': 'Embedded Microcontroller Systems', 'credits': 4, 'semester': 4, 'course_type': 'THEORY', 'department': dept_map.get('EEE'), 'instructor': None},
+            {'code': 'MECH-301', 'title': 'Thermodynamics & Heat Transfer', 'credits': 4, 'semester': 5, 'course_type': 'THEORY', 'department': dept_map.get('MECH'), 'instructor': None},
+            {'code': 'CIVIL-201', 'title': 'Structural Analysis & Mechanics', 'credits': 4, 'semester': 4, 'course_type': 'THEORY', 'department': dept_map.get('CIVIL'), 'instructor': None},
         ]
         course_map = {}
         for c in courses_data:
@@ -136,21 +141,22 @@ class Command(BaseCommand):
                 code=c['code'],
                 defaults={
                     'title': c['title'],
-                    'department': dept_map[c['dept']],
+                    'department': c['department'],
                     'instructor': c['instructor'],
                     'credits': c['credits'],
-                    'capacity': c['capacity']
+                    'semester': c['semester'],
+                    'course_type': c['course_type'],
                 }
             )
             course_map[c['code']] = course_obj
 
         for stu in student_objs[:3]:
-            Enrollment.objects.get_or_create(student=stu, course=course_map['CS-101'], defaults={'final_grade': 'A'})
-            Enrollment.objects.get_or_create(student=stu, course=course_map['CS-204'], defaults={'final_grade': 'A+'})
+            Enrollment.objects.get_or_create(student=stu, course=course_map['CSE-101'], defaults={'final_grade': 'A'})
+            Enrollment.objects.get_or_create(student=stu, course=course_map['CSE-202'], defaults={'final_grade': 'A+'})
 
         # 6. Attendance
         session, _ = AttendanceSession.objects.get_or_create(
-            course=course_map['CS-101'],
+            course=course_map['CSE-101'],
             date=date.today() - timedelta(days=2),
             defaults={'faculty': faculty_map['FAC-CS-001'], 'session_type': SessionType.LECTURE, 'topic_covered': 'Binary Search Trees'}
         )
@@ -160,7 +166,7 @@ class Command(BaseCommand):
         # 7. Exams
         exam, _ = Exam.objects.get_or_create(
             name='Midterm Assessment 2026',
-            course=course_map['CS-101'],
+            course=course_map['CSE-101'],
             defaults={'exam_type': ExamType.MIDTERM, 'date': date.today() + timedelta(days=14), 'max_marks': Decimal('100.00'), 'passing_marks': Decimal('40.00')}
         )
         ExamResult.objects.get_or_create(exam=exam, student=student_objs[0], defaults={'marks_obtained': Decimal('94.50'), 'grade': 'A+'})
