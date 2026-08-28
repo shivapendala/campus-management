@@ -72,7 +72,7 @@ campus-management/
 │   └── nginx/
 │       └── default.conf          # Nginx reverse proxy gateway
 │
-├── .env.example                  # Environment configuration template
+├── example.env                   # Environment configuration template (copy to environment)
 ├── .gitignore                    # Git exclusions
 ├── docker-compose.yml            # Multi-container orchestration (DB, API, Web, Proxy)
 ├── pytest.ini                    # Pytest test discovery settings
