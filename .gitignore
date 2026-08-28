@@ -4,9 +4,13 @@ __pycache__/
 *$py.class
 *.so
 
-# Environments
+# Environments and Secrets
 .env
-.env.local
+.env.*
+*.env
+*.env.local
+*.secret
+*.key
 .venv
 env/
 venv/
