@@ -3,10 +3,25 @@ import StatCard from '../../components/StatCard';
 import { Link } from 'react-router-dom';
 
 export const StudentDashboard = ({ user }) => {
+  const studentCourses = [
+    { code: 'CSE-101', title: 'Data Structures & Algorithms', instructor: 'Dr. Alan Smith', credits: 4, present: 40, total: 42, percentage: 95.2, grade: 'A+' },
+    { code: 'CSE-202', title: 'Database Management Systems (DBMS)', instructor: 'Dr. Elena Rostova', credits: 4, present: 36, total: 38, percentage: 94.7, grade: 'A' },
+    { code: 'CSE-301', title: 'Operating Systems', instructor: 'Dr. Alan Smith', credits: 4, present: 37, total: 40, percentage: 92.5, grade: 'A' },
+    { code: 'CSE-302', title: 'Computer Networks', instructor: 'Dr. Elena Rostova', credits: 3, present: 33, total: 36, percentage: 91.7, grade: 'A-' },
+    { code: 'CSE-401', title: 'Machine Learning & Neural Networks', instructor: 'Dr. Alan Smith', credits: 4, present: 32, total: 34, percentage: 94.1, grade: 'A+' },
+  ];
+
+  const totalPresent = studentCourses.reduce((acc, c) => acc + c.present, 0);
+  const totalClasses = studentCourses.reduce((acc, c) => acc + c.total, 0);
+  const aggregateAttendance = Math.round((totalPresent / totalClasses) * 100);
+
   return (
     <div className="container-fluid p-4">
       {/* Student Header Banner */}
-      <div className="campus-card p-4 mb-4 text-white border-0 shadow-md" style={{ background: 'linear-gradient(135deg, #059669 0%, #047857 100%)' }}>
+      <div
+        className="campus-card p-4 mb-4 text-white border-0 shadow-md"
+        style={{ background: 'linear-gradient(135deg, #059669 0%, #047857 100%)' }}
+      >
         <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
           <div>
             <span className="badge bg-white text-success mb-2 fw-bold px-3 py-1">
@@ -14,16 +29,16 @@ export const StudentDashboard = ({ user }) => {
             </span>
             <h2 className="fw-bold mb-1">Welcome back, {user?.first_name || user?.username || 'Student'}!</h2>
             <p className="mb-0 text-white-50 small">
-              Student ID: <strong>STU-2026-001</strong> • Semester: <strong>4 (Fall 2026)</strong> • B.Tech Computer Science
+              Student ID: <strong>STU-2026-001</strong> • Semester: <strong>4 (Fall 2026)</strong> • B.Tech Computer Science & Engineering
             </p>
           </div>
           <div className="d-flex gap-2">
-            <Link to="/courses" className="btn btn-light btn-sm fw-semibold text-success">
+            <Link to="/attendance" className="btn btn-light btn-sm fw-semibold text-success">
+              <i className="bi bi-calendar-check-fill me-1"></i> Attendance Log
+            </Link>
+            <Link to="/courses" className="btn btn-outline-light btn-sm fw-semibold">
               <i className="bi bi-book me-1"></i> My Courses
             </Link>
-            <button className="btn btn-outline-light btn-sm fw-semibold">
-              <i className="bi bi-file-earmark-arrow-down me-1"></i> Grade Card
-            </button>
           </div>
         </div>
       </div>
@@ -42,10 +57,10 @@ export const StudentDashboard = ({ user }) => {
         </div>
         <div className="col-12 col-sm-6 col-xl-3">
           <StatCard
-            title="Attendance Rate"
-            value="94.6%"
-            change="Safe (Threshold > 75%)"
-            isPositive={true}
+            title="Overall Attendance"
+            value={`${aggregateAttendance}%`}
+            change={`${totalPresent}/${totalClasses} Classes (Threshold > 75%)`}
+            isPositive={aggregateAttendance >= 75}
             icon="bi-pie-chart-fill"
             gradientClass="bg-gradient-primary"
           />
@@ -53,7 +68,7 @@ export const StudentDashboard = ({ user }) => {
         <div className="col-12 col-sm-6 col-xl-3">
           <StatCard
             title="Enrolled Credits"
-            value="18"
+            value="19"
             change="5 Registered Courses"
             isPositive={true}
             icon="bi-mortarboard"
@@ -64,7 +79,7 @@ export const StudentDashboard = ({ user }) => {
           <StatCard
             title="Fee Status"
             value="Paid in Full"
-            change="Invoice #TXN-982347"
+            change="Invoice #TXN-CAMPUS-982347"
             isPositive={true}
             icon="bi-check-circle-fill"
             gradientClass="bg-gradient-amber"
@@ -72,88 +87,83 @@ export const StudentDashboard = ({ user }) => {
         </div>
       </div>
 
-      {/* Enrolled Courses & Upcoming Assessments */}
+      {/* Enrolled Courses & Attendance Breakdown */}
       <div className="row g-4 mb-4">
         <div className="col-12 col-lg-7">
           <div className="campus-card p-4 h-100">
-            <h5 className="fw-bold text-dark mb-3">Enrolled Courses & Progress</h5>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h5 className="fw-bold text-dark mb-0">Enrolled Courses & Attendance Breakdown</h5>
+              <Link to="/attendance" className="btn btn-sm btn-link text-primary p-0">
+                View Full Audit →
+              </Link>
+            </div>
             <div className="d-flex flex-column gap-3">
-              <div className="p-3 bg-light rounded-3 border">
-                <div className="d-flex justify-content-between align-items-center mb-1">
-                  <h6 className="fw-bold text-dark mb-0">CS-101: Data Structures & Algorithms</h6>
-                  <span className="badge bg-success">Grade: A+</span>
+              {studentCourses.map((c, idx) => (
+                <div key={idx} className="p-3 bg-light rounded-3 border">
+                  <div className="d-flex justify-content-between align-items-center mb-1">
+                    <h6 className="fw-bold text-dark mb-0">
+                      {c.code}: {c.title}
+                    </h6>
+                    <span className="badge bg-success">Grade: {c.grade}</span>
+                  </div>
+                  <small className="text-muted d-block mb-2">
+                    Instructor: {c.instructor} • {c.credits} Credits
+                  </small>
+                  <div className="d-flex justify-content-between small text-secondary mb-1">
+                    <span>
+                      Attendance: <strong>{c.percentage}%</strong>
+                    </span>
+                    <span>
+                      {c.present}/{c.total} Lectures Attended
+                    </span>
+                  </div>
+                  <div className="progress" style={{ height: '6px' }}>
+                    <div
+                      className={`progress-bar ${c.percentage >= 85 ? 'bg-success' : c.percentage >= 75 ? 'bg-warning' : 'bg-danger'}`}
+                      style={{ width: `${c.percentage}%` }}
+                    ></div>
+                  </div>
                 </div>
-                <small className="text-muted d-block mb-2">Instructor: Dr. Alan Smith • 4 Credits</small>
-                <div className="d-flex justify-content-between small text-secondary mb-1">
-                  <span>Attendance: 96%</span>
-                  <span>18/20 Lectures Attended</span>
-                </div>
-                <div className="progress" style={{ height: '6px' }}>
-                  <div className="progress-bar bg-success" style={{ width: '96%' }}></div>
-                </div>
-              </div>
-
-              <div className="p-3 bg-light rounded-3 border">
-                <div className="d-flex justify-content-between align-items-center mb-1">
-                  <h6 className="fw-bold text-dark mb-0">CS-204: Distributed Cloud Architectures</h6>
-                  <span className="badge bg-primary">Grade: A</span>
-                </div>
-                <small className="text-muted d-block mb-2">Instructor: Dr. Elena Rostova • 3 Credits</small>
-                <div className="d-flex justify-content-between small text-secondary mb-1">
-                  <span>Attendance: 92%</span>
-                  <span>14/15 Lectures Attended</span>
-                </div>
-                <div className="progress" style={{ height: '6px' }}>
-                  <div className="progress-bar bg-primary" style={{ width: '92%' }}></div>
-                </div>
-              </div>
-
-              <div className="p-3 bg-light rounded-3 border">
-                <div className="d-flex justify-content-between align-items-center mb-1">
-                  <h6 className="fw-bold text-dark mb-0">EE-201: Embedded Microcontroller Systems</h6>
-                  <span className="badge bg-info text-dark">Grade: A</span>
-                </div>
-                <small className="text-muted d-block mb-2">Instructor: Dr. Rajesh Kumar • 4 Credits</small>
-                <div className="d-flex justify-content-between small text-secondary mb-1">
-                  <span>Attendance: 90%</span>
-                  <span>12/14 Lectures Attended</span>
-                </div>
-                <div className="progress" style={{ height: '6px' }}>
-                  <div className="progress-bar bg-info" style={{ width: '90%' }}></div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
 
+        {/* Quick Timetable & Notifications */}
         <div className="col-12 col-lg-5">
           <div className="campus-card p-4 h-100">
-            <h5 className="fw-bold text-dark mb-3">Upcoming Examinations & Deadlines</h5>
-            <div className="d-flex flex-column gap-3">
-              <div className="p-3 bg-light rounded-3 border-start border-4 border-danger">
-                <div className="d-flex justify-content-between">
-                  <strong className="text-dark">Midterm Exam: CS-101</strong>
-                  <span className="badge bg-danger">In 14 Days</span>
+            <h5 className="fw-bold text-dark mb-3">Today's Class Schedule</h5>
+            <div className="d-flex flex-column gap-3 mb-4">
+              <div className="p-3 bg-light rounded-3 border-start border-4 border-primary">
+                <div className="d-flex justify-content-between align-items-center">
+                  <span className="badge bg-primary text-white">09:00 - 10:00</span>
+                  <small className="text-muted">Turing-204</small>
                 </div>
-                <small className="text-muted d-block">Auditorium Hall 1 • Max Marks: 100</small>
+                <h6 className="fw-bold text-dark mt-2 mb-0">DBMS (CSE-202)</h6>
+                <small className="text-secondary">Dr. Elena Rostova</small>
+              </div>
+
+              <div className="p-3 bg-light rounded-3 border-start border-4 border-info">
+                <div className="d-flex justify-content-between align-items-center">
+                  <span className="badge bg-info text-white">10:00 - 11:00</span>
+                  <small className="text-muted">Turing-101</small>
+                </div>
+                <h6 className="fw-bold text-dark mt-2 mb-0">Operating Systems (CSE-301)</h6>
+                <small className="text-secondary">Dr. Alan Smith</small>
               </div>
 
               <div className="p-3 bg-light rounded-3 border-start border-4 border-warning">
-                <div className="d-flex justify-content-between">
-                  <strong className="text-dark">Assignment 1 Submission</strong>
-                  <span className="badge bg-warning text-dark">Due in 5 Days</span>
+                <div className="d-flex justify-content-between align-items-center">
+                  <span className="badge bg-warning text-dark">11:00 - 11:30</span>
+                  <small className="text-muted">Campus Lounge</small>
                 </div>
-                <small className="text-muted d-block">Graph Traversal BFS & DFS Algorithms</small>
-              </div>
-
-              <div className="p-3 bg-light rounded-3 border-start border-4 border-success">
-                <div className="d-flex justify-content-between">
-                  <strong className="text-dark">Google Cloud Placement Drive</strong>
-                  <span className="badge bg-success">Shortlisted</span>
-                </div>
-                <small className="text-muted d-block">Associate Cloud Solutions Engineer • 24.5 LPA</small>
+                <h6 className="fw-bold text-dark mt-2 mb-0">☕ Break / Recess</h6>
               </div>
             </div>
+
+            <Link to="/timetable" className="btn btn-outline-primary btn-sm w-100 fw-semibold">
+              <i className="bi bi-calendar3 me-1"></i> View Full Weekly Timetable
+            </Link>
           </div>
         </div>
       </div>
