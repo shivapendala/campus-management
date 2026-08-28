@@ -1,126 +1,129 @@
 """
-EduCore Framework - Master Curriculum Course Catalog Database Seeder - Part 13
+EduCore Framework - Master Curriculum Course Catalog Database Seeder - Part 14
 
 Contains comprehensive static syllabus definitions, credit structures, L-T-P parameters,
-textbooks, and reference lists for MECH and ECE courses.
+textbooks, and reference lists for EEE and ECE courses.
 Used by the course attainment engines and lesson planners.
 """
 
 from typing import Dict, List, Any
 
-CURRICULUM_COURSE_CATALOG_DB_EXPANDED_V11: Dict[str, Dict[str, Any]] = {
-    "ME303": {
-        "code": "ME303",
-        "title": "Fluid Mechanics & Hydraulic Machinery",
+CURRICULUM_COURSE_CATALOG_DB_EXPANDED_V12: Dict[str, Dict[str, Any]] = {
+    "EE701": {
+        "code": "EE701",
+        "title": "High Voltage Engineering",
         "credits": 4,
         "ltp": "3-1-0",
-        "department": "Mechanical Engineering",
+        "department": "Electrical & Electronics Engineering",
         "units": [
             {
                 "unit": 1,
-                "title": "Fluid Properties & Statics",
+                "title": "Conduction & Breakdown in Gases",
                 "topics": [
-                    "Fluid definition, properties: density, specific weight, specific volume, viscosity, surface tension, capillarity.",
-                    "Fluid statics: Pascal's law, hydrostatic equation, pressure measurement using manometers.",
-                    "Hydrostatic forces on submerged plane and curved surfaces, buoyancy, metacentric height stability."
+                    "Gases as insulating media, collision processes, ionization processes.",
+                    "Townsend's criterion for breakdown, Townsend's primary and secondary ionization coefficients.",
+                    "Streamer theory of breakdown in gases, Paschen's law and its limitations.",
+                    "Breakdown in non-uniform fields and corona discharges, post-breakdown phenomenon."
                 ]
             },
             {
                 "unit": 2,
-                "title": "Fluid Kinematics & Dynamics",
+                "title": "Conduction & Breakdown in Liquids & Solids",
                 "topics": [
-                    "Types of fluid flow: steady/unsteady, uniform/non-uniform, laminar/turbulent, 1D/2D/3D flows.",
-                    "Streamlines, pathlines, streaklines, continuity equation in Cartesian coordinates.",
-                    "Fluid dynamics: Euler's equation of motion, Bernoulli's equation derivation and limitations, Venturimeter, Orificemeter."
+                    "Liquid dielectrics: Pure and commercial liquids, conduction and breakdown in pure liquids.",
+                    "Breakdown mechanisms in commercial liquids: suspended particle, cavity, and electroconvection mechanisms.",
+                    "Solid dielectrics: Intrinsic breakdown, electromechanical breakdown, thermal breakdown.",
+                    "Chemical and electrochemical deterioration, treeing and tracking, partial discharges."
                 ]
             },
             {
                 "unit": 3,
-                "title": "Flow Through Pipes & Boundary Layer",
+                "title": "Generation of High Voltages & Currents",
                 "topics": [
-                    "Laminar flow through circular pipes (Hagen-Poiseuille law), turbulent flow, Darcy-Weisbach equation.",
-                    "Minor losses in pipes: sudden expansion, sudden contraction, bends, fittings.",
-                    "Boundary layer concepts: thickness, drag and lift, boundary layer separation control."
+                    "Generation of high DC voltages: Half-wave and full-wave rectifier circuits, Cockcroft-Walton voltage multiplier.",
+                    "Generation of high AC voltages: Cascaded transformers, resonant transformers.",
+                    "Generation of impulse voltages: Single-stage and multi-stage Marx impulse generator circuits.",
+                    "Generation of impulse currents, tripping and control of impulse generators."
                 ]
             },
             {
                 "unit": 4,
-                "title": "Impact of Jets & Hydraulic Turbines",
+                "title": "Measurement of High Voltages & Currents",
                 "topics": [
-                    "Force exerted by fluid jet on stationary and moving flat and curved vanes, velocity triangles.",
-                    "Hydraulic turbines: Classification, Pelton wheel, Francis turbine, Kaplan turbine construction and design.",
-                    "Draft tube theory, cavitation in turbines, unit and specific speed parameters."
+                    "Peak voltage measurements: Sphere gaps, electrostatic voltmeters.",
+                    "Generating voltmeters, peak reading AC voltmeters, voltage dividers (resistive, capacitive).",
+                    "Measurement of high DC, AC, and impulse currents: Hall generators, Rogowski coils, shunts."
                 ]
             },
             {
                 "unit": 5,
-                "title": "Hydraulic Pumps",
+                "title": "High Voltage Testing & Insulation Coordination",
                 "topics": [
-                    "Centrifugal pumps: Working principle, work done, manometric efficiency, minimum starting speed, priming.",
-                    "Reciprocating pumps: Working principle, slip, indicator diagram, air vessels."
+                    "Testing of insulators, bushings, cables, and transformers: destructive and non-destructive tests.",
+                    "Radio interference measurements, insulation coordination: statistical approach, surge arresters."
                 ]
             }
         ],
         "textbooks": [
-            "Frank M. White, 'Fluid Mechanics', McGraw-Hill.",
-            "R.K. Bansal, 'A Textbook of Fluid Mechanics and Hydraulic Machines', Laxmi Publications."
+            "M.S. Naidu and V. Kamaraju, 'High Voltage Engineering', Tata McGraw-Hill, 5th Edition.",
+            "C.L. Wadhwa, 'High Voltage Engineering', New Age International Publishers, 3rd Edition."
         ]
     },
-    "EC501": {
-        "code": "EC501",
-        "title": "Digital Signal Processing",
+    "EC702": {
+        "code": "EC702",
+        "title": "Radar & Satellite Communication",
         "credits": 4,
-        "ltp": "3-0-2",
+        "ltp": "3-1-0",
         "department": "Electronics & Communication Engineering",
         "units": [
             {
                 "unit": 1,
-                "title": "Discrete Fourier Transform",
+                "title": "Radar Equations & Types",
                 "topics": [
-                    "Discrete Fourier Transform (DFT): definition, properties (linearity, periodicity, circular convolution).",
-                    "Fast Fourier Transform (FFT): Decimation-in-time (DIT) and Decimation-in-frequency (DIF) radix-2 algorithms.",
-                    "Linear filtering using DFT: overlap-add and overlap-save methods."
+                    "Radar basic principles, range equation, radar block diagram, operation frequencies.",
+                    "Minimum detectable signal, receiver noise, radar cross-section of targets.",
+                    "Pulse repetition frequency, range ambiguities, system losses.",
+                    "CW and Frequency-Modulated Radar: Doppler effect, FMCW radar, altimeters."
                 ]
             },
             {
                 "unit": 2,
-                "title": "IIR Filter Design",
+                "title": "MTI & Tracking Radar",
                 "topics": [
-                    "Analog filter approximations: Butterworth and Chebyshev approximations.",
-                    "Design of Infinite Impulse Response (IIR) digital filters: impulse invariant transformation, bilinear transformation.",
-                    "Realization structures for IIR filters: direct form I, direct form II, cascade, parallel forms."
+                    "MTI radar: Delay-line cancelers, blind speeds, double cancellation, staggered PRFs.",
+                    "Muser-limiter, tracking radars: Sequential lobing, conical scan, monopulse tracking (amplitude and phase)."
                 ]
             },
             {
                 "unit": 3,
-                "title": "FIR Filter Design",
+                "title": "Satellite Orbits & Kepler's Laws",
                 "topics": [
-                    "Symmetric and anti-symmetric Finite Impulse Response (FIR) filters, linear phase characteristics.",
-                    "Design of FIR filters using windowing techniques: Rectangular, Hamming, Hanning, Blackman, Kaiser windows.",
-                    "Frequency sampling method for FIR design, realization structures: direct form, cascade, linear phase."
+                    "Satellite history, orbital mechanics, Kepler's laws of planetary motion.",
+                    "Locating the satellite in orbit, look angles (elevation and azimuth angles) calculation.",
+                    "Orbital perturbations, launches and launch vehicles, geostationary orbit parameters."
                 ]
             },
             {
                 "unit": 4,
-                "title": "Finite Word Length Effects",
+                "title": "Satellite Subsystems & Space Link",
                 "topics": [
-                    "Quantization noise, coefficient quantization errors, product round-off noise.",
-                    "Limit cycle oscillations in recursive systems, scaling to prevent overflow."
+                    "Subsystems: Attitude and orbit control, telemetry, tracking, command, power systems, transponders.",
+                    "Satellite link design: Basic transmission theory, system noise temperature, G/T ratio.",
+                    "Design of downlinks and uplinks under rain fade conditions, link budgets calculations."
                 ]
             },
             {
                 "unit": 5,
-                "title": "Multirate DSP & Processors",
+                "title": "GPS & Satellite Services",
                 "topics": [
-                    "Decimation, interpolation, sampling rate conversion by rational factor.",
-                    "Applications of multirate DSP: subband coding, filter banks.",
-                    "DSP processors architecture: Harvard architecture, pipelining, MAC units."
+                    "Global Positioning System (GPS): Segment organization, GPS codes, position determination.",
+                    "Direct Broadcast Satellite (DBS) television, satellite internet services, VSAT networks."
                 ]
             }
         ],
         "textbooks": [
-            "John G. Proakis and Dimitris G. Manolakis, 'Digital Signal Processing: Principles, Algorithms, and Applications', Pearson.",
-            "Alan V. Oppenheim and Ronald W. Schafer, 'Discrete-Time Signal Processing', Pearson."
+            "Merrill I. Skolnik, 'Introduction to Radar Systems', Tata McGraw-Hill, 3rd Edition.",
+            "Dennis Roddy, 'Satellite Communications', McGraw-Hill, 4th Edition."
         ]
     }
 }
