@@ -62,6 +62,8 @@ urlpatterns = [
     path('api/events/', include('apps.events.urls')),
     path('api/notifications/', include('apps.notifications.urls')),
     path('api/reports/', include('apps.reports.urls')),
+    path('api/core/', include('apps.core.urls')),
+    path('api/analytics/', include('apps.analytics.urls')),
 ]
 
 if settings.DEBUG:
