@@ -1,8 +1,8 @@
 from rest_framework import viewsets, permissions, filters, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Course, Enrollment
-from .serializers import CourseSerializer, EnrollmentSerializer
+from .models import Course, Enrollment, TimetableEntry
+from .serializers import CourseSerializer, EnrollmentSerializer, TimetableEntrySerializer
 from apps.faculty.models import Faculty
 
 
@@ -113,3 +113,91 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [filters.SearchFilter]
     search_fields = ['student__name', 'course__code', 'course__title']
+
+
+class TimetableEntryViewSet(viewsets.ModelViewSet):
+    queryset = TimetableEntry.objects.select_related('course', 'faculty', 'department').all()
+    serializer_class = TimetableEntrySerializer
+    permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['title', 'room', 'section', 'day', 'course__code', 'faculty__name']
+    ordering_fields = ['day', 'start_time']
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        day = self.request.query_params.get('day')
+        faculty_id = self.request.query_params.get('faculty_id')
+        room = self.request.query_params.get('room')
+        year = self.request.query_params.get('year')
+        section = self.request.query_params.get('section')
+
+        if day:
+            queryset = queryset.filter(day=day)
+        if faculty_id:
+            queryset = queryset.filter(faculty_id=faculty_id)
+        if room:
+            queryset = queryset.filter(room__iexact=room)
+        if year:
+            queryset = queryset.filter(year=year)
+        if section:
+            queryset = queryset.filter(section=section)
+        return queryset
+
+    @action(detail=False, methods=['post'], url_path='check-conflicts')
+    def check_conflicts(self, request):
+        """
+        Validates whether a proposed slot has Room, Faculty, or Section conflicts.
+        """
+        day = request.data.get('day')
+        start_time = request.data.get('start_time')
+        end_time = request.data.get('end_time')
+        room = request.data.get('room')
+        faculty_id = request.data.get('faculty_id')
+        year = request.data.get('year')
+        section = request.data.get('section')
+        exclude_id = request.data.get('exclude_id')
+
+        conflicts = []
+
+        # 1. Room collision
+        if room and day and start_time:
+            room_clash = TimetableEntry.objects.filter(day=day, room__iexact=room, start_time=start_time)
+            if exclude_id:
+                room_clash = room_clash.exclude(id=exclude_id)
+            if room_clash.exists():
+                c = room_clash.first()
+                conflicts.append({
+                    'type': 'ROOM_CONFLICT',
+                    'message': f'Room "{room}" is already occupied on {day} at {start_time} by {c.title} ({c.section}).',
+                })
+
+        # 2. Faculty double-booking
+        if faculty_id and day and start_time:
+            fac_clash = TimetableEntry.objects.filter(day=day, faculty_id=faculty_id, start_time=start_time)
+            if exclude_id:
+                fac_clash = fac_clash.exclude(id=exclude_id)
+            if fac_clash.exists():
+                c = fac_clash.first()
+                conflicts.append({
+                    'type': 'FACULTY_CONFLICT',
+                    'message': f'Faculty member is already scheduled to teach {c.title} ({c.room}) on {day} at {start_time}.',
+                })
+
+        # 3. Section collision
+        if year and section and day and start_time:
+            sec_clash = TimetableEntry.objects.filter(day=day, year=year, section=section, start_time=start_time)
+            if exclude_id:
+                sec_clash = sec_clash.exclude(id=exclude_id)
+            if sec_clash.exists():
+                c = sec_clash.first()
+                conflicts.append({
+                    'type': 'SECTION_CONFLICT',
+                    'message': f'Year {year} Section {section} already has a scheduled slot: {c.title} ({c.room}).',
+                })
+
+        has_conflicts = len(conflicts) > 0
+        return Response({
+            'has_conflicts': has_conflicts,
+            'conflicts_count': len(conflicts),
+            'conflicts': conflicts,
+        }, status=status.HTTP_200_OK)

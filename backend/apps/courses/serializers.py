@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Course, Enrollment
+from .models import Course, Enrollment, TimetableEntry
 from apps.departments.serializers import DepartmentSerializer
 from apps.faculty.serializers import FacultySerializer
 from apps.students.serializers import StudentSerializer
@@ -56,3 +56,24 @@ class EnrollmentSerializer(serializers.ModelSerializer):
             'enrolled_at', 'status', 'final_grade'
         ]
         read_only_fields = ['id', 'enrolled_at']
+
+
+class TimetableEntrySerializer(serializers.ModelSerializer):
+    course_detail = CourseSerializer(source='course', read_only=True)
+    faculty_detail = FacultySerializer(source='faculty', read_only=True)
+    department_detail = DepartmentSerializer(source='department', read_only=True)
+    course = serializers.PrimaryKeyRelatedField(queryset=Course.objects.all(), required=False, allow_null=True)
+    faculty = serializers.PrimaryKeyRelatedField(queryset=Faculty.objects.all(), required=False, allow_null=True)
+    department = serializers.PrimaryKeyRelatedField(queryset=Department.objects.all(), required=False, allow_null=True)
+
+    class Meta:
+        model = TimetableEntry
+        fields = [
+            'id', 'day', 'start_time', 'end_time',
+            'course', 'course_detail', 'title',
+            'faculty', 'faculty_detail',
+            'department', 'department_detail',
+            'year', 'section', 'room', 'entry_type',
+            'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']

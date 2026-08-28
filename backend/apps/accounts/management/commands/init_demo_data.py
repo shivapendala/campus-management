@@ -8,7 +8,7 @@ from apps.accounts.models import UserRole, UserStatus
 from apps.departments.models import Department
 from apps.faculty.models import Faculty, FacultyStatus
 from apps.students.models import Student, StudentStatus
-from apps.courses.models import Course, Enrollment
+from apps.courses.models import Course, Enrollment, TimetableEntry
 from apps.attendance.models import AttendanceSession, AttendanceRecord, SessionType, AttendanceStatus
 from apps.examinations.models import Exam, ExamResult, ExamType
 from apps.fees.models import FeeCategory, FeeStructure, FeePayment, PaymentMethod, PaymentStatus
@@ -38,7 +38,7 @@ class Command(BaseCommand):
         ]
         dept_map = {}
         for d in depts_data:
-            obj, _ = Department.objects.get_or_create(code=d['code'], defaults=d)
+            obj, _ = Department.objects.update_or_create(name=d['name'], defaults=d)
             dept_map[d['code']] = obj
 
         # 2. Institutional Role Users
@@ -72,11 +72,12 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('1. Initialized 7 institutional role user accounts.'))
 
         # 3. Faculty
+        # 3. Faculty
         faculty_data = [
-            {'fid': 'FAC-CS-001', 'name': 'Dr. Alan Smith', 'email': 'hod.cs@campus.edu', 'phone': '+1 (555) 100-0002', 'dept': 'CS', 'desig': 'Professor & HOD', 'user': user_map['hod_cs']},
-            {'fid': 'FAC-CS-002', 'name': 'Dr. Elena Rostova', 'email': 'elena.r@campus.edu', 'phone': '+1 (555) 100-0003', 'dept': 'CS', 'desig': 'Associate Professor', 'user': user_map['prof_elena']},
-            {'fid': 'FAC-EE-001', 'name': 'Dr. Rajesh Kumar', 'email': 'rajesh.k@campus.edu', 'phone': '+1 (555) 100-0010', 'dept': 'EE', 'desig': 'Professor & HOD', 'user': None},
-            {'fid': 'FAC-BA-001', 'name': 'Dr. Sara Vance', 'email': 'sara.v@campus.edu', 'phone': '+1 (555) 100-0011', 'dept': 'BA', 'desig': 'Assistant Professor', 'user': None},
+            {'fid': 'FAC-CS-001', 'name': 'Dr. Alan Smith', 'email': 'hod.cs@campus.edu', 'phone': '+1 (555) 100-0002', 'dept': 'CSE', 'desig': 'Professor & HOD', 'user': user_map['hod_cs']},
+            {'fid': 'FAC-CS-002', 'name': 'Dr. Elena Rostova', 'email': 'elena.r@campus.edu', 'phone': '+1 (555) 100-0003', 'dept': 'CSE', 'desig': 'Associate Professor', 'user': user_map['prof_elena']},
+            {'fid': 'FAC-EE-001', 'name': 'Dr. Rajesh Kumar', 'email': 'rajesh.k@campus.edu', 'phone': '+1 (555) 100-0010', 'dept': 'EEE', 'desig': 'Professor & HOD', 'user': None},
+            {'fid': 'FAC-ME-001', 'name': 'Dr. Robert Ford', 'email': 'robert.f@campus.edu', 'phone': '+1 (555) 100-0011', 'dept': 'MECH', 'desig': 'Professor & HOD', 'user': None},
         ]
         faculty_map = {}
         for f in faculty_data:
@@ -97,11 +98,11 @@ class Command(BaseCommand):
 
         # 4. Students
         students_data = [
-            {'sid': 'STU-2026-001', 'name': 'Alex Johnson', 'email': 'student@campus.edu', 'phone': '+1 (555) 100-0004', 'dept': 'CS', 'year': 2, 'sec': 'A', 'sem': 4, 'gpa': Decimal('3.85'), 'user': user_map['student']},
-            {'sid': 'STU-2026-002', 'name': 'Maya Patel', 'email': 'maya.p@campus.edu', 'phone': '+1 (555) 100-0020', 'dept': 'CS', 'year': 2, 'sec': 'A', 'sem': 4, 'gpa': Decimal('3.92'), 'user': None},
-            {'sid': 'STU-2026-003', 'name': 'David Lee', 'email': 'david.l@campus.edu', 'phone': '+1 (555) 100-0021', 'dept': 'EE', 'year': 3, 'sec': 'B', 'sem': 6, 'gpa': Decimal('3.45'), 'user': None},
-            {'sid': 'STU-2026-004', 'name': 'Sophia Martinez', 'email': 'sophia.m@campus.edu', 'phone': '+1 (555) 100-0022', 'dept': 'BA', 'year': 1, 'sec': 'A', 'sem': 2, 'gpa': Decimal('3.78'), 'user': None},
-            {'sid': 'STU-2026-005', 'name': 'Liam O\'Connor', 'email': 'liam.o@campus.edu', 'phone': '+1 (555) 100-0023', 'dept': 'ME', 'year': 2, 'sec': 'C', 'sem': 3, 'gpa': Decimal('3.60'), 'user': None},
+            {'sid': 'STU-2026-001', 'name': 'Alex Johnson', 'email': 'student@campus.edu', 'phone': '+1 (555) 100-0004', 'dept': 'CSE', 'year': 2, 'sec': 'A', 'sem': 4, 'gpa': Decimal('3.85'), 'user': user_map['student']},
+            {'sid': 'STU-2026-002', 'name': 'Maya Patel', 'email': 'maya.p@campus.edu', 'phone': '+1 (555) 100-0020', 'dept': 'CSE', 'year': 2, 'sec': 'A', 'sem': 4, 'gpa': Decimal('3.92'), 'user': None},
+            {'sid': 'STU-2026-003', 'name': 'David Lee', 'email': 'david.l@campus.edu', 'phone': '+1 (555) 100-0021', 'dept': 'EEE', 'year': 3, 'sec': 'B', 'sem': 6, 'gpa': Decimal('3.45'), 'user': None},
+            {'sid': 'STU-2026-004', 'name': 'Sophia Martinez', 'email': 'sophia.m@campus.edu', 'phone': '+1 (555) 100-0022', 'dept': 'ECE', 'year': 1, 'sec': 'A', 'sem': 2, 'gpa': Decimal('3.78'), 'user': None},
+            {'sid': 'STU-2026-005', 'name': 'Liam O\'Connor', 'email': 'liam.o@campus.edu', 'phone': '+1 (555) 100-0023', 'dept': 'MECH', 'year': 2, 'sec': 'C', 'sem': 3, 'gpa': Decimal('3.60'), 'user': None},
         ]
         student_objs = []
         for s in students_data:
@@ -125,14 +126,14 @@ class Command(BaseCommand):
 
         # 4. Courses (CSE curriculum: Data Structures, DBMS, Operating Systems, Computer Networks, Machine Learning)
         courses_data = [
-            {'code': 'CSE-101', 'title': 'Data Structures & Algorithms', 'credits': 4, 'semester': 3, 'course_type': 'THEORY', 'department': dept_map.get('CSE'), 'instructor': faculty_objs[0] if faculty_objs else None},
-            {'code': 'CSE-202', 'title': 'Database Management Systems (DBMS)', 'credits': 4, 'semester': 4, 'course_type': 'THEORY', 'department': dept_map.get('CSE'), 'instructor': faculty_objs[1] if len(faculty_objs) > 1 else None},
-            {'code': 'CSE-301', 'title': 'Operating Systems', 'credits': 4, 'semester': 5, 'course_type': 'THEORY', 'department': dept_map.get('CSE'), 'instructor': faculty_objs[0] if faculty_objs else None},
-            {'code': 'CSE-302', 'title': 'Computer Networks', 'credits': 3, 'semester': 6, 'course_type': 'THEORY', 'department': dept_map.get('CSE'), 'instructor': faculty_objs[1] if len(faculty_objs) > 1 else None},
-            {'code': 'CSE-401', 'title': 'Machine Learning & Neural Networks', 'credits': 4, 'semester': 7, 'course_type': 'ELECTIVE', 'department': dept_map.get('CSE'), 'instructor': faculty_objs[0] if faculty_objs else None},
+            {'code': 'CSE-101', 'title': 'Data Structures & Algorithms', 'credits': 4, 'semester': 3, 'course_type': 'THEORY', 'department': dept_map.get('CSE'), 'instructor': faculty_map.get('FAC-CS-001')},
+            {'code': 'CSE-202', 'title': 'Database Management Systems (DBMS)', 'credits': 4, 'semester': 4, 'course_type': 'THEORY', 'department': dept_map.get('CSE'), 'instructor': faculty_map.get('FAC-CS-002')},
+            {'code': 'CSE-301', 'title': 'Operating Systems', 'credits': 4, 'semester': 5, 'course_type': 'THEORY', 'department': dept_map.get('CSE'), 'instructor': faculty_map.get('FAC-CS-001')},
+            {'code': 'CSE-302', 'title': 'Computer Networks', 'credits': 3, 'semester': 6, 'course_type': 'THEORY', 'department': dept_map.get('CSE'), 'instructor': faculty_map.get('FAC-CS-002')},
+            {'code': 'CSE-401', 'title': 'Machine Learning & Neural Networks', 'credits': 4, 'semester': 7, 'course_type': 'ELECTIVE', 'department': dept_map.get('CSE'), 'instructor': faculty_map.get('FAC-CS-001')},
             {'code': 'ECE-201', 'title': 'Digital Signal Processing', 'credits': 4, 'semester': 4, 'course_type': 'THEORY', 'department': dept_map.get('ECE'), 'instructor': None},
-            {'code': 'EEE-201', 'title': 'Embedded Microcontroller Systems', 'credits': 4, 'semester': 4, 'course_type': 'THEORY', 'department': dept_map.get('EEE'), 'instructor': None},
-            {'code': 'MECH-301', 'title': 'Thermodynamics & Heat Transfer', 'credits': 4, 'semester': 5, 'course_type': 'THEORY', 'department': dept_map.get('MECH'), 'instructor': None},
+            {'code': 'EEE-201', 'title': 'Embedded Microcontroller Systems', 'credits': 4, 'semester': 4, 'course_type': 'THEORY', 'department': dept_map.get('EEE'), 'instructor': faculty_map.get('FAC-EE-001')},
+            {'code': 'MECH-301', 'title': 'Thermodynamics & Heat Transfer', 'credits': 4, 'semester': 5, 'course_type': 'THEORY', 'department': dept_map.get('MECH'), 'instructor': faculty_map.get('FAC-ME-001')},
             {'code': 'CIVIL-201', 'title': 'Structural Analysis & Mechanics', 'credits': 4, 'semester': 4, 'course_type': 'THEORY', 'department': dept_map.get('CIVIL'), 'instructor': None},
         ]
         course_map = {}
@@ -144,8 +145,8 @@ class Command(BaseCommand):
                     'department': c['department'],
                     'instructor': c['instructor'],
                     'credits': c['credits'],
-                    'semester': c['semester'],
-                    'course_type': c['course_type'],
+                    'semester_offered': f"Semester {c['semester']}",
+                    'is_elective': c['course_type'] == 'ELECTIVE',
                 }
             )
             course_map[c['code']] = course_obj
@@ -176,7 +177,7 @@ class Command(BaseCommand):
         fee_struct, _ = FeeStructure.objects.get_or_create(
             title='Fall 2026 CS Tuition',
             category=fee_cat,
-            department=dept_map['CS'],
+            department=dept_map['CSE'],
             defaults={'semester': 4, 'amount': Decimal('4500.00'), 'due_date': date.today() + timedelta(days=30)}
         )
         FeePayment.objects.get_or_create(
@@ -187,7 +188,7 @@ class Command(BaseCommand):
 
         # 9. Assignments
         assignment, _ = Assignment.objects.get_or_create(
-            course=course_map['CS-101'],
+            course=course_map['CSE-101'],
             title='Assignment 1: Graph Traversal Algorithms',
             defaults={'faculty': faculty_map['FAC-CS-001'], 'deadline': timezone.now() + timedelta(days=7), 'max_score': Decimal('50.00')}
         )
@@ -233,5 +234,34 @@ class Command(BaseCommand):
             title='Midterm Schedule Announced',
             defaults={'message': 'Your Fall 2026 exam schedule has been published.', 'notification_type': NotificationType.ACADEMIC}
         )
+
+        # 15. Timetable Entries (Monday Benchmark + Weekdays)
+        timetable_slots = [
+            # Monday Benchmark
+            {'day': 'Monday', 'start_time': '09:00', 'end_time': '10:00', 'course': course_map.get('CSE-202'), 'title': 'DBMS', 'faculty': faculty_map.get('FAC-CS-002'), 'room': 'Turing-204', 'year': 3, 'section': 'A', 'entry_type': 'LECTURE'},
+            {'day': 'Monday', 'start_time': '10:00', 'end_time': '11:00', 'course': course_map.get('CSE-301'), 'title': 'OS', 'faculty': faculty_map.get('FAC-CS-001'), 'room': 'Turing-101', 'year': 3, 'section': 'A', 'entry_type': 'LECTURE'},
+            {'day': 'Monday', 'start_time': '11:00', 'end_time': '11:30', 'course': None, 'title': 'Break / Recess', 'faculty': None, 'room': 'Campus Lounge', 'year': 3, 'section': 'A', 'entry_type': 'BREAK'},
+            {'day': 'Monday', 'start_time': '11:30', 'end_time': '12:30', 'course': course_map.get('CSE-302'), 'title': 'Networks', 'faculty': faculty_map.get('FAC-CS-002'), 'room': 'Tesla-204', 'year': 3, 'section': 'A', 'entry_type': 'LECTURE'},
+            {'day': 'Monday', 'start_time': '01:30', 'end_time': '02:30', 'course': course_map.get('CSE-401'), 'title': 'ML', 'faculty': faculty_map.get('FAC-CS-001'), 'room': 'Turing-101', 'year': 3, 'section': 'A', 'entry_type': 'LECTURE'},
+            # Tuesday
+            {'day': 'Tuesday', 'start_time': '09:00', 'end_time': '10:00', 'course': course_map.get('CSE-101'), 'title': 'Data Structures', 'faculty': faculty_map.get('FAC-CS-001'), 'room': 'Turing-101', 'year': 3, 'section': 'A', 'entry_type': 'LECTURE'},
+            {'day': 'Tuesday', 'start_time': '10:00', 'end_time': '12:30', 'course': course_map.get('CSE-202'), 'title': 'DBMS SQL Laboratory', 'faculty': faculty_map.get('FAC-CS-002'), 'room': 'Lab-3', 'year': 3, 'section': 'A', 'entry_type': 'LAB'},
+            # Wednesday
+            {'day': 'Wednesday', 'start_time': '09:00', 'end_time': '10:00', 'course': course_map.get('CSE-301'), 'title': 'Operating Systems', 'faculty': faculty_map.get('FAC-CS-001'), 'room': 'Turing-101', 'year': 3, 'section': 'A', 'entry_type': 'LECTURE'},
+            {'day': 'Wednesday', 'start_time': '10:00', 'end_time': '11:00', 'course': course_map.get('CSE-302'), 'title': 'Computer Networks', 'faculty': faculty_map.get('FAC-CS-002'), 'room': 'Tesla-204', 'year': 3, 'section': 'A', 'entry_type': 'LECTURE'},
+            # Thursday
+            {'day': 'Thursday', 'start_time': '09:00', 'end_time': '10:00', 'course': course_map.get('CSE-401'), 'title': 'Machine Learning', 'faculty': faculty_map.get('FAC-CS-001'), 'room': 'Turing-101', 'year': 3, 'section': 'A', 'entry_type': 'LECTURE'},
+            {'day': 'Thursday', 'start_time': '02:00', 'end_time': '04:30', 'course': course_map.get('CSE-301'), 'title': 'OS Kernel Lab', 'faculty': faculty_map.get('FAC-CS-001'), 'room': 'Cloud Lab 2', 'year': 3, 'section': 'A', 'entry_type': 'LAB'},
+            # Friday
+            {'day': 'Friday', 'start_time': '09:00', 'end_time': '10:00', 'course': course_map.get('CSE-101'), 'title': 'Data Structures Tutorial', 'faculty': faculty_map.get('FAC-CS-001'), 'room': 'Turing-101', 'year': 3, 'section': 'A', 'entry_type': 'TUTORIAL'},
+            {'day': 'Friday', 'start_time': '11:00', 'end_time': '12:30', 'course': course_map.get('CSE-401'), 'title': 'AI Project Mentoring', 'faculty': faculty_map.get('FAC-CS-001'), 'room': 'Curie-301', 'year': 3, 'section': 'A', 'entry_type': 'LECTURE'},
+        ]
+        for slot in timetable_slots:
+            TimetableEntry.objects.get_or_create(
+                day=slot['day'],
+                start_time=slot['start_time'],
+                room=slot['room'],
+                defaults=slot
+            )
 
         self.stdout.write(self.style.SUCCESS('==> Institutional database seeded successfully!'))

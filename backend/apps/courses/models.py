@@ -77,3 +77,40 @@ class Enrollment(models.Model):
 
     def __str__(self):
         return f"{self.student.student_id} in {self.course.code}"
+
+
+class TimetableEntry(models.Model):
+    class DayOfWeek(models.TextChoices):
+        MONDAY = 'Monday', 'Monday'
+        TUESDAY = 'Tuesday', 'Tuesday'
+        WEDNESDAY = 'Wednesday', 'Wednesday'
+        THURSDAY = 'Thursday', 'Thursday'
+        FRIDAY = 'Friday', 'Friday'
+
+    class EntryType(models.TextChoices):
+        LECTURE = 'LECTURE', 'Lecture'
+        LAB = 'LAB', 'Laboratory'
+        BREAK = 'BREAK', 'Break / Recess'
+        TUTORIAL = 'TUTORIAL', 'Tutorial'
+
+    day = models.CharField(max_length=15, choices=DayOfWeek.choices, default=DayOfWeek.MONDAY)
+    start_time = models.CharField(max_length=10, default='09:00')
+    end_time = models.CharField(max_length=10, default='10:00')
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, blank=True, related_name='timetable_slots')
+    title = models.CharField(max_length=100, default='Lecture')
+    faculty = models.ForeignKey(Faculty, on_delete=models.SET_NULL, null=True, blank=True, related_name='timetable_slots')
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True, related_name='timetable_slots')
+    year = models.PositiveIntegerField(default=3)
+    section = models.CharField(max_length=5, default='A')
+    room = models.CharField(max_length=50, default='Turing-101')
+    entry_type = models.CharField(max_length=15, choices=EntryType.choices, default=EntryType.LECTURE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['day', 'start_time']
+        verbose_name = 'Timetable Entry'
+        verbose_name_plural = 'Timetable Entries'
+
+    def __str__(self):
+        return f"{self.day} {self.start_time}-{self.end_time}: {self.title} ({self.room})"
