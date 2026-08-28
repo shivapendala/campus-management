@@ -9,6 +9,10 @@ export const studentService = {
     const res = await apiClient.get(`/students/${id}/`);
     return res.data;
   },
+  getProfileDetails: async (id) => {
+    const res = await apiClient.get(`/students/${id}/profile-details/`);
+    return res.data;
+  },
   create: async (data) => {
     const res = await apiClient.post('/students/', data);
     return res.data;
@@ -19,6 +23,14 @@ export const studentService = {
   },
   delete: async (id) => {
     const res = await apiClient.delete(`/students/${id}/`);
+    return res.data;
+  },
+  importCSV: async (csvText) => {
+    const res = await apiClient.post('/students/import-csv/', { csv_text: csvText });
+    return res.data;
+  },
+  exportCSV: async () => {
+    const res = await apiClient.get('/students/export-csv/', { responseType: 'blob' });
     return res.data;
   },
 };
