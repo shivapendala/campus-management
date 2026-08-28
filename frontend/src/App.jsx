@@ -16,6 +16,7 @@ import Timetable from './pages/Timetable';
 import Attendance from './pages/Attendance';
 import Examinations from './pages/Examinations';
 import Assignments from './pages/Assignments';
+import Fees from './pages/Fees';
 
 export const App = () => {
   return (
@@ -35,6 +36,14 @@ export const App = () => {
               element={
                 <MainLayout>
                   <Dashboard />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/fees"
+              element={
+                <MainLayout>
+                  <Fees />
                 </MainLayout>
               }
             />
