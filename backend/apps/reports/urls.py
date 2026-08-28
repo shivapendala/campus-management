@@ -4,6 +4,7 @@ from .views import (
     DepartmentMetricsReportView,
     FinancialSummaryReportView,
     PlacementStatsReportView,
+    RecentActivitiesReportView,
 )
 
 urlpatterns = [
@@ -11,4 +12,5 @@ urlpatterns = [
     path('departments/', DepartmentMetricsReportView.as_view(), name='reports-departments'),
     path('finances/', FinancialSummaryReportView.as_view(), name='reports-finances'),
     path('placements/', PlacementStatsReportView.as_view(), name='reports-placements'),
+    path('activities/', RecentActivitiesReportView.as_view(), name='reports-activities'),
 ]
