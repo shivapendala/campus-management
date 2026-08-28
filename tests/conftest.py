@@ -1,8 +1,11 @@
 import pytest
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
-from apps.authentication.models import UserRole
-from apps.campus.models import Department, Student, FacultyMember, Course, Enrollment
+from apps.accounts.models import UserRole
+from apps.departments.models import Department
+from apps.students.models import Student
+from apps.faculty.models import Faculty
+from apps.courses.models import Course, Enrollment
 
 User = get_user_model()
 

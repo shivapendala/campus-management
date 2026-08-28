@@ -13,9 +13,10 @@ class TestAuthenticationAPI:
         response = api_client.get(url)
         assert response.status_code == status.HTTP_200_OK
         assert response.data['status'] == 'healthy'
+        assert len(response.data['modules']) >= 15
 
     def test_user_registration(self, api_client):
-        url = reverse('auth_register')
+        url = reverse('accounts_register')
         payload = {
             'username': 'newuser',
             'email': 'newuser@campus.edu',
@@ -30,7 +31,7 @@ class TestAuthenticationAPI:
         assert User.objects.filter(username='newuser').exists()
 
     def test_jwt_login_success(self, api_client, student_user):
-        url = reverse('token_obtain_pair')
+        url = reverse('accounts_token')
         payload = {
             'username': student_user.username,
             'password': 'password123',
@@ -43,7 +44,7 @@ class TestAuthenticationAPI:
         assert response.data['user']['username'] == student_user.username
 
     def test_jwt_login_invalid_credentials(self, api_client):
-        url = reverse('token_obtain_pair')
+        url = reverse('accounts_token')
         payload = {
             'username': 'nonexistent',
             'password': 'wrongpassword',
@@ -52,12 +53,12 @@ class TestAuthenticationAPI:
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_user_profile_authenticated(self, auth_client, admin_user):
-        url = reverse('auth_profile')
+        url = reverse('accounts_profile')
         response = auth_client.get(url)
         assert response.status_code == status.HTTP_200_OK
         assert response.data['username'] == admin_user.username
 
     def test_user_profile_unauthenticated(self, api_client):
-        url = reverse('auth_profile')
+        url = reverse('accounts_profile')
         response = api_client.get(url)
         assert response.status_code == status.HTTP_401_UNAUTHORIZED

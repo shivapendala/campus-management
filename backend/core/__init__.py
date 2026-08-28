@@ -1,1 +1,0 @@
-"""Campus Management Core Package."""

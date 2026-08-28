@@ -15,7 +15,7 @@ export const Faculty = () => {
   useEffect(() => {
     const fetchFaculty = async () => {
       try {
-        const res = await api.get('/campus/faculty/');
+        const res = await api.get('/faculty/');
         if (res.data.results && res.data.results.length > 0) {
           setFaculty(res.data.results);
         } else {

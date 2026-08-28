@@ -23,17 +23,11 @@ export const Dashboard = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const [sumRes, enrollRes, deptRes, gradeRes] = await Promise.allSettled([
-          api.get('/analytics/overview/'),
-          api.get('/analytics/enrollment-trends/'),
-          api.get('/analytics/department-distribution/'),
-          api.get('/analytics/grade-distribution/'),
+        const [sumRes] = await Promise.allSettled([
+          api.get('/reports/overview/'),
         ]);
 
         if (sumRes.status === 'fulfilled') setSummary(sumRes.value.data);
-        if (enrollRes.status === 'fulfilled') setEnrollmentData(enrollRes.value.data);
-        if (deptRes.status === 'fulfilled') setDeptData(deptRes.value.data);
-        if (gradeRes.status === 'fulfilled') setGradeData(gradeRes.value.data);
       } catch (err) {
         console.error('Error fetching dashboard analytics:', err);
       } finally {

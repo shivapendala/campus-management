@@ -18,7 +18,7 @@ export const Students = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const res = await api.get('/campus/students/');
+        const res = await api.get('/students/');
         if (res.data.results && res.data.results.length > 0) {
           setStudents(res.data.results);
         } else {

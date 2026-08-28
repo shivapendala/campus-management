@@ -1,1 +1,0 @@
-"""Campus management commands package."""

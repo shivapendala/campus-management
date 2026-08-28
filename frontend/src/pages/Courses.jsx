@@ -15,7 +15,7 @@ export const Courses = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await api.get('/campus/courses/');
+        const res = await api.get('/courses/');
         if (res.data.results && res.data.results.length > 0) {
           setCourses(res.data.results);
         } else {
