@@ -23,6 +23,23 @@ import Complaints from './pages/Complaints';
 import Events from './pages/Events';
 import Notifications from './pages/Notifications';
 import Reports from './pages/Reports';
+import AnalyticsPortal from './pages/AnalyticsPortal';
+import Student360Portal from './pages/Student360Portal';
+import FacultyPortal from './pages/FacultyPortal';
+import CurriculumStudio from './pages/CurriculumStudio';
+import ExamOperations from './pages/ExamOperations';
+import FinanceStudio from './pages/FinanceStudio';
+import PlacementBoard from './pages/PlacementBoard';
+import GrievanceMatrix from './pages/GrievanceMatrix';
+import ReportStudio from './pages/ReportStudio';
+import LibraryStudio from './pages/LibraryStudio';
+import EventLogistics from './pages/EventLogistics';
+import SecurityAuditPortal from './pages/SecurityAuditPortal';
+import HostelTransportPortal from './pages/HostelTransportPortal';
+import ResearchIPRStudio from './pages/ResearchIPRStudio';
+import AccreditationDashboard from './pages/AccreditationDashboard';
+import AlumniNetworkPortal from './pages/AlumniNetworkPortal';
+import RegulatoryCompliances from './pages/RegulatoryCompliances';
 
 export const App = () => {
   return (
@@ -162,6 +179,142 @@ export const App = () => {
               element={
                 <MainLayout>
                   <Reports />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/analytics"
+              element={
+                <MainLayout>
+                  <AnalyticsPortal />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/student-360"
+              element={
+                <MainLayout>
+                  <Student360Portal />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/faculty-portal"
+              element={
+                <MainLayout>
+                  <FacultyPortal />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/curriculum-studio"
+              element={
+                <MainLayout>
+                  <CurriculumStudio />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/exam-operations"
+              element={
+                <MainLayout>
+                  <ExamOperations />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/finance-studio"
+              element={
+                <MainLayout>
+                  <FinanceStudio />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/placement-board"
+              element={
+                <MainLayout>
+                  <PlacementBoard />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/grievance-matrix"
+              element={
+                <MainLayout>
+                  <GrievanceMatrix />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/report-studio"
+              element={
+                <MainLayout>
+                  <ReportStudio />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/library-studio"
+              element={
+                <MainLayout>
+                  <LibraryStudio />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/event-logistics"
+              element={
+                <MainLayout>
+                  <EventLogistics />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/security-audit"
+              element={
+                <MainLayout>
+                  <SecurityAuditPortal />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/hostel-transport"
+              element={
+                <MainLayout>
+                  <HostelTransportPortal />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/research-ipr"
+              element={
+                <MainLayout>
+                  <ResearchIPRStudio />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/accreditation"
+              element={
+                <MainLayout>
+                  <AccreditationDashboard />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/alumni-network"
+              element={
+                <MainLayout>
+                  <AlumniNetworkPortal />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/regulatory-compliance"
+              element={
+                <MainLayout>
+                  <RegulatoryCompliances />
                 </MainLayout>
               }
             />
