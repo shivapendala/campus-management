@@ -40,6 +40,7 @@ import ResearchIPRStudio from './pages/ResearchIPRStudio';
 import AccreditationDashboard from './pages/AccreditationDashboard';
 import AlumniNetworkPortal from './pages/AlumniNetworkPortal';
 import RegulatoryCompliances from './pages/RegulatoryCompliances';
+import AssetInventoryStudio from './pages/AssetInventoryStudio';
 
 export const App = () => {
   return (
@@ -315,6 +316,14 @@ export const App = () => {
               element={
                 <MainLayout>
                   <RegulatoryCompliances />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/asset-inventory"
+              element={
+                <MainLayout>
+                  <AssetInventoryStudio />
                 </MainLayout>
               }
             />
