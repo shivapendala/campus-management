@@ -11,6 +11,7 @@ import ResetPassword from './pages/ResetPassword';
 import Students from './pages/Students';
 import Courses from './pages/Courses';
 import Faculty from './pages/Faculty';
+import Departments from './pages/Departments';
 
 export const App = () => {
   return (
@@ -30,6 +31,14 @@ export const App = () => {
               element={
                 <MainLayout>
                   <Dashboard />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/departments"
+              element={
+                <MainLayout>
+                  <Departments />
                 </MainLayout>
               }
             />

@@ -28,13 +28,13 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         self.stdout.write('==> Starting Institutional Schema Data Seeding...')
 
-        # 1. Departments
+        # 1. Departments (CSE, ECE, EEE, MECH, CIVIL)
         depts_data = [
-            {'code': 'CS', 'name': 'Computer Science & Engineering', 'established_year': 1995, 'head_of_department': 'Dr. Alan Smith', 'building_block': 'Turing Block A'},
-            {'code': 'EE', 'name': 'Electrical & Electronics Engineering', 'established_year': 1992, 'head_of_department': 'Dr. Rajesh Kumar', 'building_block': 'Tesla Block B'},
-            {'code': 'ME', 'name': 'Mechanical Engineering', 'established_year': 1988, 'head_of_department': 'Dr. Robert Ford', 'building_block': 'Watt Block C'},
-            {'code': 'BA', 'name': 'Business Administration', 'established_year': 2004, 'head_of_department': 'Dr. Sara Vance', 'building_block': 'Drucker Block D'},
-            {'code': 'BIO', 'name': 'Biotechnology & Bioinformatics', 'established_year': 2012, 'head_of_department': 'Dr. Rosalind Franklin', 'building_block': 'Curie Block E'},
+            {'code': 'CSE', 'name': 'Computer Science & Engineering', 'established_year': 1995, 'head_of_department': 'Dr. Alan Smith', 'building_block': 'Turing Block A'},
+            {'code': 'ECE', 'name': 'Electronics & Communication Engineering', 'established_year': 1998, 'head_of_department': 'Dr. Marcus Vance', 'building_block': 'Shannon Block B'},
+            {'code': 'EEE', 'name': 'Electrical & Electronics Engineering', 'established_year': 1992, 'head_of_department': 'Dr. Rajesh Kumar', 'building_block': 'Tesla Block C'},
+            {'code': 'MECH', 'name': 'Mechanical Engineering', 'established_year': 1988, 'head_of_department': 'Dr. Robert Ford', 'building_block': 'Watt Block D'},
+            {'code': 'CIVIL', 'name': 'Civil Engineering', 'established_year': 1985, 'head_of_department': 'Dr. Arthur Dent', 'building_block': 'Smeaton Block E'},
         ]
         dept_map = {}
         for d in depts_data:

@@ -7,6 +7,7 @@ export const Sidebar = () => {
 
   const navItems = [
     { to: '/', icon: 'bi-grid-1x2-fill', label: 'Dashboard' },
+    { to: '/departments', icon: 'bi-buildings-fill', label: 'Departments' },
     { to: '/students', icon: 'bi-people-fill', label: 'Students' },
     { to: '/courses', icon: 'bi-journal-bookmark-fill', label: 'Courses & Catalog' },
     { to: '/faculty', icon: 'bi-person-workspace', label: 'Faculty Directory' },

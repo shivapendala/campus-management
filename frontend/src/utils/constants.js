@@ -1,7 +1,3 @@
-/**
- * Application constants, roles, and status badge configurations.
- */
-
 export const USER_ROLES = {
   ADMIN: 'ADMIN',
   HOD: 'HOD',
@@ -13,41 +9,49 @@ export const USER_ROLES = {
 };
 
 export const ROLE_LABELS = {
-  ADMIN: 'System Administrator',
+  ADMIN: 'Administrator',
   HOD: 'Head of Department',
   FACULTY: 'Faculty Member',
   STUDENT: 'Student',
   PLACEMENT_OFFICER: 'Placement Officer',
-  ACCOUNTANT: 'Accounts Officer',
+  ACCOUNTANT: 'Accountant / Bursar',
   LIBRARIAN: 'Librarian',
 };
 
 export const ROLE_BADGE_CLASSES = {
   ADMIN: 'bg-danger text-white',
-  HOD: 'bg-primary text-white',
-  FACULTY: 'bg-info text-dark',
+  HOD: 'bg-indigo text-white',
+  FACULTY: 'bg-primary text-white',
   STUDENT: 'bg-success text-white',
   PLACEMENT_OFFICER: 'bg-warning text-dark',
-  ACCOUNTANT: 'bg-secondary text-white',
-  LIBRARIAN: 'bg-dark text-white',
+  ACCOUNTANT: 'bg-info text-dark',
+  LIBRARIAN: 'bg-secondary text-white',
 };
 
 export const STATUS_BADGE_CLASSES = {
   ACTIVE: 'bg-success text-white',
   INACTIVE: 'bg-secondary text-white',
+  GRADUATED: 'bg-info text-dark',
   SUSPENDED: 'bg-danger text-white',
   PENDING: 'bg-warning text-dark',
-  GRADUATED: 'bg-info text-dark',
-  SUCCESS: 'bg-success text-white',
-  FAILED: 'bg-danger text-white',
-  OPEN: 'bg-warning text-dark',
+  OPEN: 'bg-danger text-white',
+  UNDER_REVIEW: 'bg-warning text-dark',
   RESOLVED: 'bg-success text-white',
+  CLOSED: 'bg-secondary text-white',
 };
 
 export const DEPARTMENTS = [
-  { code: 'CS', name: 'Computer Science & Engineering' },
-  { code: 'EE', name: 'Electrical & Electronics Engineering' },
-  { code: 'ME', name: 'Mechanical Engineering' },
-  { code: 'BA', name: 'Business Administration' },
-  { code: 'BIO', name: 'Biotechnology & Bioinformatics' },
+  { code: 'CSE', name: 'Computer Science & Engineering', building: 'Turing Block A' },
+  { code: 'ECE', name: 'Electronics & Communication Engineering', building: 'Shannon Block B' },
+  { code: 'EEE', name: 'Electrical & Electronics Engineering', building: 'Tesla Block C' },
+  { code: 'MECH', name: 'Mechanical Engineering', building: 'Watt Block D' },
+  { code: 'CIVIL', name: 'Civil Engineering', building: 'Smeaton Block E' },
 ];
+
+export default {
+  USER_ROLES,
+  ROLE_LABELS,
+  ROLE_BADGE_CLASSES,
+  STATUS_BADGE_CLASSES,
+  DEPARTMENTS,
+};
