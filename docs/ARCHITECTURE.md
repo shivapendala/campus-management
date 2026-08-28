@@ -1,100 +1,55 @@
-# Campus Management System — Architecture Overview
+# 🏛️ Architecture & System Design Document
 
-## 1. System Architecture
+## 1. High-Level Modular Architecture
 
-The Campus Management System is designed as a decoupled modern multi-tier application:
+The Campus Management System is designed as an **Enterprise Clean Modular Monolith** with decoupled service boundaries:
 
 ```
-                  +--------------------------------+
-                  |  Client Browser / User Device  |
-                  +---------------+----------------+
-                                  |
-                                  | HTTP/HTTPS (Port 80/443)
-                                  v
-                  +--------------------------------+
-                  |    Nginx Reverse Proxy Gateway |
-                  +-------+----------------+-------+
-                          |                |
-             Static Assets|                | /api/* & /admin/*
-             (SPA routes) |                |
-                          v                v
-            +-------------------+    +--------------------+
-            | React + Bootstrap |    | Django REST (WSGI) |
-            | Frontend (Port 80)|    | Backend (Port 8000)|
-            +-------------------+    +---------+----------+
-                                               |
-                                               | SQL / ORM
-                                               v
-                                     +--------------------+
-                                     |  PostgreSQL 16 DB  |
-                                     +--------------------+
+[ Web Clients (React 18 + Vite) ]
+                │
+         HTTPS / REST API
+                ▼
+┌───────────────────────────────────────────────┐
+│           Django REST Framework (DRF)         │
+│  ┌─────────────────┬──────────────────────┐  │
+│  │   Auth / JWT    │   Permission Guard   │  │
+│  └─────────────────┴──────────────────────┘  │
+│  ┌─────────────────────────────────────────┐  │
+│  │       15 Modular Domain Applications    │  │
+│  │ accounts    │ students  │ faculty       │  │
+│  │ departments │ courses   │ timetable     │  │
+│  │ attendance  │ exams     │ assignments   │  │
+│  │ fees        │ library   │ placements    │  │
+│  │ complaints  │ events    │ notifications │  │
+│  │ reports     │           │               │  │
+│  └─────────────────────────────────────────┘  │
+│  ┌─────────────────────────────────────────┐  │
+│  │          Domain Business Services       │  │
+│  │  GradingEngine │ ShortageAudit │ Ledger │  │
+│  └─────────────────────────────────────────┘  │
+└───────────────────────┬───────────────────────┘
+                        ▼
+       [ PostgreSQL 16 Relational Engine ]
 ```
 
-## 2. Technology Stack
+---
 
-| Layer | Technology | Key Libraries & Purpose |
-|---|---|---|
-| **Frontend** | React 18 + JavaScript | Vite, Bootstrap 5, Bootstrap Icons, Chart.js, React-Chartjs-2, Axios |
-| **Backend** | Python 3.11 + Django 5 | Django REST Framework, SimpleJWT, django-cors-headers, Gunicorn |
-| **Database** | PostgreSQL 16 | Relational data persistence with foreign keys and indexes |
-| **Authentication** | JWT (JSON Web Tokens) | Stateless tokens with access (60m) & refresh (7d) rotation |
-| **Testing** | Pytest + Django TestCase | `pytest-django`, fixtures, API client validation |
-| **Deployment** | Docker & Nginx | Docker Compose multi-container setup with reverse proxy |
+## 2. Layered Software Architecture
 
-## 3. Database Schema Overview
+1. **Presentation Layer (React 18 SPA)**:
+   - Modern component library built with vanilla CSS design tokens, glassmorphism, dynamic animations, and responsive flex/grid layouts.
+   - Centralized Axios client (`apiClient.js`) with automatic JWT bearer header injection.
+   - Dual-mode perspectives for Administrators, Faculty, and Students.
 
-```mermaid
-erDiagram
-    USER ||--o| FACULTY_MEMBER : "has profile"
-    USER ||--o| STUDENT : "has profile"
-    DEPARTMENT ||--o{ FACULTY_MEMBER : "employs"
-    DEPARTMENT ||--o{ STUDENT : "enrolls"
-    DEPARTMENT ||--o{ COURSE : "offers"
-    FACULTY_MEMBER ||--o{ COURSE : "teaches"
-    STUDENT ||--o{ ENROLLMENT : "participates"
-    COURSE ||--o{ ENROLLMENT : "contains"
+2. **API & Serialization Layer (Django REST Framework)**:
+   - Strict ModelSerializers validating incoming payload types, foreign keys, and unique constraints.
+   - URL routers organizing nested endpoints by domain.
 
-    USER {
-        int id PK
-        string username
-        string email
-        string role
-        string first_name
-        string last_name
-    }
+3. **Domain Service Layer**:
+   - `ExaminationGradingService`: 10-point standard grading scale and credit-weighted SGPA engine.
+   - `AttendanceAnalyticsService`: Percentage calculations, condonation shortage filtering, and monthly heatmaps.
+   - `FinancialLedgerService`: Fiscal realization, collection rate computation, and receipt generation.
+   - `StudentDossierService`: GPA aggregation, student ID generation, and atomic CSV batch imports.
 
-    DEPARTMENT {
-        int id PK
-        string code
-        string name
-        int established_year
-    }
-
-    STUDENT {
-        int id PK
-        string student_id UK
-        int semester
-        decimal gpa
-    }
-
-    COURSE {
-        int id PK
-        string code UK
-        string title
-        int credits
-        int capacity
-    }
-
-    ENROLLMENT {
-        int id PK
-        string grade
-        decimal attendance_percentage
-    }
-```
-
-## 4. Authentication Flow (JWT)
-
-1. Client posts credentials (`username`, `password`) to `/api/auth/token/`.
-2. Backend validates credentials and issues signed `access` and `refresh` JWT tokens.
-3. React stores tokens and sends `Authorization: Bearer <access_token>` on subsequent API calls.
-4. Axios response interceptor intercepts expired token errors (`401 Unauthorized`) and automatically calls `/api/auth/token/refresh/` using the refresh token.
+4. **Persistence Layer (PostgreSQL / SQLite)**:
+   - Fully normalized relational schema with foreign key integrity, cascade protection, and composite indexing on query patterns.

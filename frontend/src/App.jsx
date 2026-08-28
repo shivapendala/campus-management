@@ -17,6 +17,12 @@ import Attendance from './pages/Attendance';
 import Examinations from './pages/Examinations';
 import Assignments from './pages/Assignments';
 import Fees from './pages/Fees';
+import Library from './pages/Library';
+import Placements from './pages/Placements';
+import Complaints from './pages/Complaints';
+import Events from './pages/Events';
+import Notifications from './pages/Notifications';
+import Reports from './pages/Reports';
 
 export const App = () => {
   return (
@@ -30,60 +36,12 @@ export const App = () => {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
 
-            {/* Authenticated Campus Module Routes */}
+            {/* Authenticated Campus 15-Module Routes */}
             <Route
               path="/"
               element={
                 <MainLayout>
                   <Dashboard />
-                </MainLayout>
-              }
-            />
-            <Route
-              path="/fees"
-              element={
-                <MainLayout>
-                  <Fees />
-                </MainLayout>
-              }
-            />
-            <Route
-              path="/assignments"
-              element={
-                <MainLayout>
-                  <Assignments />
-                </MainLayout>
-              }
-            />
-            <Route
-              path="/examinations"
-              element={
-                <MainLayout>
-                  <Examinations />
-                </MainLayout>
-              }
-            />
-            <Route
-              path="/attendance"
-              element={
-                <MainLayout>
-                  <Attendance />
-                </MainLayout>
-              }
-            />
-            <Route
-              path="/timetable"
-              element={
-                <MainLayout>
-                  <Timetable />
-                </MainLayout>
-              }
-            />
-            <Route
-              path="/departments"
-              element={
-                <MainLayout>
-                  <Departments />
                 </MainLayout>
               }
             />
@@ -96,6 +54,22 @@ export const App = () => {
               }
             />
             <Route
+              path="/faculty"
+              element={
+                <MainLayout>
+                  <Faculty />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/departments"
+              element={
+                <MainLayout>
+                  <Departments />
+                </MainLayout>
+              }
+            />
+            <Route
               path="/courses"
               element={
                 <MainLayout>
@@ -104,10 +78,90 @@ export const App = () => {
               }
             />
             <Route
-              path="/faculty"
+              path="/timetable"
               element={
                 <MainLayout>
-                  <Faculty />
+                  <Timetable />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/attendance"
+              element={
+                <MainLayout>
+                  <Attendance />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/examinations"
+              element={
+                <MainLayout>
+                  <Examinations />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/assignments"
+              element={
+                <MainLayout>
+                  <Assignments />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/fees"
+              element={
+                <MainLayout>
+                  <Fees />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/library"
+              element={
+                <MainLayout>
+                  <Library />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/placements"
+              element={
+                <MainLayout>
+                  <Placements />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/complaints"
+              element={
+                <MainLayout>
+                  <Complaints />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/events"
+              element={
+                <MainLayout>
+                  <Events />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/notifications"
+              element={
+                <MainLayout>
+                  <Notifications />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/reports"
+              element={
+                <MainLayout>
+                  <Reports />
                 </MainLayout>
               }
             />

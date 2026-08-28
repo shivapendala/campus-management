@@ -6,16 +6,22 @@ export const Sidebar = () => {
   const { role } = useAuth();
 
   const navItems = [
-    { to: '/', icon: 'bi-grid-1x2-fill', label: 'Dashboard' },
-    { to: '/fees', icon: 'bi-wallet2', label: 'Fees & Finance' },
-    { to: '/assignments', icon: 'bi-journal-check', label: 'Assignments' },
-    { to: '/examinations', icon: 'bi-award-fill', label: 'Examinations & Grades' },
-    { to: '/attendance', icon: 'bi-calendar-check-fill', label: 'Attendance' },
-    { to: '/timetable', icon: 'bi-calendar3', label: 'Timetable Matrix' },
-    { to: '/departments', icon: 'bi-buildings-fill', label: 'Departments' },
+    { to: '/', icon: 'bi-grid-1x2-fill', label: 'Admin Dashboard' },
     { to: '/students', icon: 'bi-people-fill', label: 'Students' },
-    { to: '/courses', icon: 'bi-journal-bookmark-fill', label: 'Courses & Catalog' },
     { to: '/faculty', icon: 'bi-person-workspace', label: 'Faculty Directory' },
+    { to: '/departments', icon: 'bi-buildings-fill', label: 'Departments' },
+    { to: '/courses', icon: 'bi-journal-bookmark-fill', label: 'Courses & Catalog' },
+    { to: '/timetable', icon: 'bi-calendar3', label: 'Timetable Matrix' },
+    { to: '/attendance', icon: 'bi-calendar-check-fill', label: 'Attendance' },
+    { to: '/examinations', icon: 'bi-award-fill', label: 'Examinations & Grades' },
+    { to: '/assignments', icon: 'bi-journal-check', label: 'Assignments' },
+    { to: '/fees', icon: 'bi-wallet2', label: 'Fees & Finance' },
+    { to: '/library', icon: 'bi-book-half', label: 'Library Commons' },
+    { to: '/placements', icon: 'bi-briefcase-fill', label: 'Placements' },
+    { to: '/complaints', icon: 'bi-shield-exclamation', label: 'Grievance Support' },
+    { to: '/events', icon: 'bi-calendar-event-fill', label: 'Events & Fests' },
+    { to: '/notifications', icon: 'bi-megaphone-fill', label: 'Notices & Circulars' },
+    { to: '/reports', icon: 'bi-bar-chart-line-fill', label: 'Analytics & Reports' },
   ];
 
   return (

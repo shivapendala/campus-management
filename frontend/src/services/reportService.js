@@ -1,20 +1,24 @@
 import apiClient from './apiClient';
 
 export const reportService = {
-  getOverview: async () => {
-    const res = await apiClient.get('/reports/overview/');
+  getExecutiveSummary: async () => {
+    const res = await apiClient.get('/reports/reports/executive_summary/');
     return res.data;
   },
-  getDepartments: async () => {
-    const res = await apiClient.get('/reports/departments/');
+  getAttendanceAnalytics: async () => {
+    const res = await apiClient.get('/reports/reports/attendance_analytics/');
     return res.data;
   },
-  getFinances: async () => {
-    const res = await apiClient.get('/reports/finances/');
+  getAcademicAnalytics: async () => {
+    const res = await apiClient.get('/reports/reports/academic_analytics/');
     return res.data;
   },
-  getPlacements: async () => {
-    const res = await apiClient.get('/reports/placements/');
+  getPlacementAnalytics: async () => {
+    const res = await apiClient.get('/reports/reports/placement_analytics/');
+    return res.data;
+  },
+  getFinancialAudit: async () => {
+    const res = await apiClient.get('/reports/reports/financial_audit/');
     return res.data;
   },
 };

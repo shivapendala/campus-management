@@ -9,6 +9,11 @@ export * from './attendanceService';
 export * from './examService';
 export * from './assignmentService';
 export * from './feeService';
+export * from './libraryService';
+export * from './placementService';
+export * from './complaintService';
+export * from './eventService';
+export * from './notificationService';
 export * from './reportService';
 
 import apiClient from './apiClient';
@@ -22,6 +27,11 @@ import attendanceService from './attendanceService';
 import examService from './examService';
 import assignmentService from './assignmentService';
 import feeService from './feeService';
+import libraryService from './libraryService';
+import placementService from './placementService';
+import complaintService from './complaintService';
+import eventService from './eventService';
+import notificationService from './notificationService';
 import reportService from './reportService';
 
 export default {
@@ -36,5 +46,10 @@ export default {
   examService,
   assignmentService,
   feeService,
+  libraryService,
+  placementService,
+  complaintService,
+  eventService,
+  notificationService,
   reportService,
 };
