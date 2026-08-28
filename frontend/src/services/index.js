@@ -6,6 +6,7 @@ export * from './courseService';
 export * from './departmentService';
 export * from './timetableService';
 export * from './attendanceService';
+export * from './examService';
 export * from './reportService';
 
 import apiClient from './apiClient';
@@ -16,6 +17,7 @@ import courseService from './courseService';
 import departmentService from './departmentService';
 import timetableService from './timetableService';
 import attendanceService from './attendanceService';
+import examService from './examService';
 import reportService from './reportService';
 
 export default {
@@ -27,5 +29,6 @@ export default {
   departmentService,
   timetableService,
   attendanceService,
+  examService,
   reportService,
 };

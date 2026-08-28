@@ -14,6 +14,7 @@ import Faculty from './pages/Faculty';
 import Departments from './pages/Departments';
 import Timetable from './pages/Timetable';
 import Attendance from './pages/Attendance';
+import Examinations from './pages/Examinations';
 
 export const App = () => {
   return (
@@ -33,6 +34,14 @@ export const App = () => {
               element={
                 <MainLayout>
                   <Dashboard />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/examinations"
+              element={
+                <MainLayout>
+                  <Examinations />
                 </MainLayout>
               }
             />
