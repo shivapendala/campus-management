@@ -48,6 +48,8 @@ import LibraryInventoryAuditor from './pages/LibraryInventoryAuditor';
 import UgcCasAppraisalConsole from './pages/UgcCasAppraisalConsole';
 import ExamModerationConsole from './pages/ExamModerationConsole';
 import OutcomeAttainmentStudio from './pages/OutcomeAttainmentStudio';
+import NepCreditAnalyzer from './pages/NepCreditAnalyzer';
+import BiometricAttendanceReconciler from './pages/BiometricAttendanceReconciler';
 
 export const App = () => {
   return (
@@ -387,6 +389,22 @@ export const App = () => {
               element={
                 <MainLayout>
                   <OutcomeAttainmentStudio />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/nep-credits"
+              element={
+                <MainLayout>
+                  <NepCreditAnalyzer />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/biometric-reconcile"
+              element={
+                <MainLayout>
+                  <BiometricAttendanceReconciler />
                 </MainLayout>
               }
             />
