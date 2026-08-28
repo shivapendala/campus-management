@@ -4,6 +4,6 @@ from .models import Faculty
 
 @admin.register(Faculty)
 class FacultyAdmin(admin.ModelAdmin):
-    list_display = ('faculty_id', 'user', 'department', 'designation', 'qualification', 'office_room', 'joining_date', 'is_active')
-    list_filter = ('department', 'designation', 'is_active')
-    search_fields = ('faculty_id', 'user__username', 'user__first_name', 'user__last_name', 'specialization')
+    list_display = ('faculty_id', 'name', 'email', 'phone', 'department', 'designation', 'status', 'joining_date')
+    list_filter = ('department', 'designation', 'status')
+    search_fields = ('faculty_id', 'name', 'email', 'phone')

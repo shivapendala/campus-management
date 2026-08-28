@@ -3,12 +3,25 @@ from django.conf import settings
 from apps.departments.models import Department
 
 
+class FacultyStatus(models.TextChoices):
+    ACTIVE = 'ACTIVE', 'Active'
+    ON_LEAVE = 'ON_LEAVE', 'On Leave'
+    RETIRED = 'RETIRED', 'Retired'
+    RESIGNED = 'RESIGNED', 'Resigned'
+
+
 class Faculty(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        null=True,
+        blank=True,
         related_name='faculty_profile'
     )
+    faculty_id = models.CharField(max_length=30, unique=True)
+    name = models.CharField(max_length=150)
+    email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=20, blank=True, default='')
     department = models.ForeignKey(
         Department,
         on_delete=models.SET_NULL,
@@ -16,20 +29,32 @@ class Faculty(models.Model):
         blank=True,
         related_name='faculty_members'
     )
-    faculty_id = models.CharField(max_length=30, unique=True, blank=True, null=True)
-    designation = models.CharField(max_length=100, default='Assistant Professor')
+    designation = models.CharField(
+        max_length=100,
+        default='Assistant Professor',
+        help_text='e.g. Professor, Associate Professor, Assistant Professor, HOD, Dean'
+    )
     qualification = models.CharField(max_length=150, blank=True, default='Ph.D.')
     specialization = models.CharField(max_length=200, blank=True, default='')
     office_room = models.CharField(max_length=50, blank=True, default='')
-    office_hours = models.CharField(max_length=150, blank=True, default='Mon-Fri 2:00 PM - 4:00 PM')
     joining_date = models.DateField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
+    status = models.CharField(
+        max_length=20,
+        choices=FacultyStatus.choices,
+        default=FacultyStatus.ACTIVE
+    )
 
     class Meta:
-        ordering = ['user__last_name', 'user__first_name']
-        verbose_name = 'Faculty Member'
+        ordering = ['name']
+        verbose_name = 'Faculty'
         verbose_name_plural = 'Faculty Members'
 
     def __str__(self):
-        full_name = self.user.get_full_name() or self.user.username
-        return f"Prof. {full_name} ({self.designation})"
+        return f"{self.faculty_id} - {self.name} ({self.designation})"
+
+    def save(self, *args, **kwargs):
+        if self.user and not self.name:
+            self.name = self.user.get_full_name() or self.user.username
+        if self.user and not self.email:
+            self.email = self.user.email
+        super().save(*args, **kwargs)

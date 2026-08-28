@@ -29,14 +29,31 @@ class TestAll15Modules:
         assert list_res.status_code == status.HTTP_200_OK
 
     def test_faculty_endpoints(self, auth_client, admin_user, sample_department):
-        faculty = Faculty.objects.create(user=admin_user, department=sample_department, faculty_id='FAC-TEST-01', designation='Professor')
+        faculty = Faculty.objects.create(
+            user=admin_user,
+            name='Test Faculty',
+            email='faculty_test@campus.edu',
+            department=sample_department,
+            faculty_id='FAC-TEST-01',
+            designation='Professor'
+        )
         url = reverse('faculty-list')
         res = auth_client.get(url)
         assert res.status_code == status.HTTP_200_OK
         assert res.data['count'] >= 1
 
     def test_students_endpoints(self, auth_client, student_user, sample_department):
-        Student.objects.create(user=student_user, department=sample_department, student_id='STU-TEST-01', semester=2, gpa=Decimal('3.80'))
+        Student.objects.create(
+            user=student_user,
+            name='Test Student',
+            email='student_test_direct@campus.edu',
+            department=sample_department,
+            student_id='STU-TEST-01',
+            year=2,
+            section='A',
+            semester=2,
+            gpa=Decimal('3.80')
+        )
         url = reverse('student-list')
         res = auth_client.get(url)
         assert res.status_code == status.HTTP_200_OK

@@ -6,8 +6,9 @@ from apps.departments.models import Department
 
 
 class FacultySerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
+    user_detail = UserSerializer(source='user', read_only=True)
     department_detail = DepartmentSerializer(source='department', read_only=True)
+    department = serializers.PrimaryKeyRelatedField(queryset=Department.objects.all(), required=False, allow_null=True)
     department_id = serializers.PrimaryKeyRelatedField(
         queryset=Department.objects.all(),
         source='department',
@@ -19,7 +20,9 @@ class FacultySerializer(serializers.ModelSerializer):
     class Meta:
         model = Faculty
         fields = [
-            'id', 'user', 'faculty_id', 'department', 'department_id', 'department_detail',
-            'designation', 'qualification', 'specialization', 'office_room',
-            'office_hours', 'joining_date', 'is_active'
+            'id', 'faculty_id', 'name', 'email', 'phone',
+            'department', 'department_id', 'department_detail',
+            'designation', 'qualification', 'specialization',
+            'office_room', 'joining_date', 'status', 'user', 'user_detail'
         ]
+        read_only_fields = ['id', 'joining_date']

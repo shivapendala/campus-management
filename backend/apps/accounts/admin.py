@@ -5,16 +5,16 @@ from .models import User
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name', 'role', 'department_name', 'is_staff', 'is_active')
-    list_filter = ('role', 'is_staff', 'is_superuser', 'is_active')
+    list_display = ('username', 'email', 'first_name', 'last_name', 'role', 'phone', 'status', 'is_staff')
+    list_filter = ('role', 'status', 'is_staff', 'is_superuser', 'is_active')
     fieldsets = BaseUserAdmin.fieldsets + (
-        ('Campus Profile Details', {
-            'fields': ('role', 'phone_number', 'department_name', 'bio', 'address', 'avatar')
+        ('Campus Details', {
+            'fields': ('role', 'phone', 'status', 'department_name', 'bio', 'address', 'avatar')
         }),
     )
     add_fieldsets = BaseUserAdmin.add_fieldsets + (
-        ('Campus Profile Details', {
-            'fields': ('role', 'phone_number', 'department_name', 'email')
+        ('Campus Details', {
+            'fields': ('role', 'phone', 'status', 'department_name', 'email')
         }),
     )
-    search_fields = ('username', 'first_name', 'last_name', 'email', 'department_name')
+    search_fields = ('username', 'first_name', 'last_name', 'email', 'phone')

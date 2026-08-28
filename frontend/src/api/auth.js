@@ -23,6 +23,37 @@ export const authAPI = {
     return response.data;
   },
 
+  // Verify role permissions
+  verifyRole: async () => {
+    const response = await api.get('/auth/verify-role/');
+    return response.data;
+  },
+
+  // Forgot password request
+  forgotPassword: async (email) => {
+    const response = await api.post('/auth/forgot-password/', { email });
+    return response.data;
+  },
+
+  // Reset password confirm
+  resetPassword: async (token, new_password, confirm_password) => {
+    const response = await api.post('/auth/reset-password/', {
+      token,
+      new_password,
+      confirm_password,
+    });
+    return response.data;
+  },
+
+  // Change password
+  changePassword: async (old_password, new_password) => {
+    const response = await api.post('/auth/change-password/', {
+      old_password,
+      new_password,
+    });
+    return response.data;
+  },
+
   // Logout by clearing tokens
   logout: () => {
     localStorage.removeItem('access_token');
@@ -30,7 +61,7 @@ export const authAPI = {
     localStorage.removeItem('user_info');
   },
 
-  // Check if user is currently authenticated
+  // Check if token exists
   isAuthenticated: () => {
     return !!localStorage.getItem('access_token');
   },

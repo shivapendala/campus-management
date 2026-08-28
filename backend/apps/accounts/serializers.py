@@ -1,13 +1,14 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from .models import PasswordResetToken
 
 User = get_user_model()
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """
-    JWT Serializer returning access, refresh tokens and user payload.
+    JWT Serializer returning access, refresh tokens and user profile payload.
     """
     @classmethod
     def get_token(cls, user):
@@ -15,6 +16,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['username'] = user.username
         token['email'] = user.email
         token['role'] = user.role
+        token['status'] = user.status
         token['first_name'] = user.first_name
         token['last_name'] = user.last_name
         return token
@@ -26,8 +28,10 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             'username': self.user.username,
             'email': self.user.email,
             'role': self.user.role,
+            'status': self.user.status,
             'first_name': self.user.first_name,
             'last_name': self.user.last_name,
+            'phone': self.user.phone,
             'department_name': self.user.department_name,
         }
         return data
@@ -38,7 +42,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'id', 'username', 'email', 'first_name', 'last_name',
-            'role', 'phone_number', 'bio', 'address', 'department_name',
+            'role', 'phone', 'status', 'bio', 'address', 'department_name',
             'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
@@ -52,7 +56,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'username', 'email', 'password', 'password_confirm',
-            'first_name', 'last_name', 'role', 'phone_number', 'department_name'
+            'first_name', 'last_name', 'role', 'phone', 'department_name'
         ]
 
     def validate(self, data):
@@ -70,3 +74,18 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True, min_length=6)
+
+
+class ForgotPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    token = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True, min_length=6)
+    confirm_password = serializers.CharField(required=True, min_length=6)
+
+    def validate(self, data):
+        if data['new_password'] != data['confirm_password']:
+            raise serializers.ValidationError({"confirm_password": "Passwords do not match."})
+        return data

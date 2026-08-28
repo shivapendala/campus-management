@@ -1,27 +1,45 @@
+import secrets
+from datetime import timedelta
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 
 class UserRole(models.TextChoices):
     ADMIN = 'ADMIN', _('Administrator')
+    HOD = 'HOD', _('Head of Department')
     FACULTY = 'FACULTY', _('Faculty / Professor')
     STUDENT = 'STUDENT', _('Student')
-    STAFF = 'STAFF', _('Staff Member')
+    PLACEMENT_OFFICER = 'PLACEMENT_OFFICER', _('Placement Officer')
+    ACCOUNTANT = 'ACCOUNTANT', _('Accountant / Finance Officer')
+    LIBRARIAN = 'LIBRARIAN', _('Librarian')
+
+
+class UserStatus(models.TextChoices):
+    ACTIVE = 'ACTIVE', _('Active')
+    INACTIVE = 'INACTIVE', _('Inactive')
+    SUSPENDED = 'SUSPENDED', _('Suspended')
+    PENDING = 'PENDING', _('Pending Verification')
 
 
 class User(AbstractUser):
     """
-    Custom User model with role-based access control and campus profile details.
+    Custom User model supporting institutional role-based access.
     """
     email = models.EmailField(_('email address'), unique=True)
     role = models.CharField(
-        max_length=20,
+        max_length=30,
         choices=UserRole.choices,
         default=UserRole.STUDENT,
-        help_text=_('Designates user role in the campus management system.')
+        help_text=_('Designates user institutional role.')
     )
-    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    status = models.CharField(
+        max_length=20,
+        choices=UserStatus.choices,
+        default=UserStatus.ACTIVE
+    )
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
     bio = models.TextField(blank=True, default='')
     address = models.TextField(blank=True, default='')
@@ -42,12 +60,30 @@ class User(AbstractUser):
 
     @property
     def is_admin_role(self):
-        return self.role == UserRole.ADMIN or self.is_superuser
+        return self.role in [UserRole.ADMIN, UserRole.HOD] or self.is_superuser
+
+
+class PasswordResetToken(models.Model):
+    """
+    Temporary token for password reset workflow.
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='password_reset_tokens')
+    token = models.CharField(max_length=64, unique=True, default=secrets.token_urlsafe)
+    code = models.CharField(max_length=6, default='123456')
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField()
+    is_used = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def save(self, *args, **kwargs):
+        if not self.expires_at:
+            self.expires_at = timezone.now() + timedelta(hours=2)
+        if not self.code:
+            self.code = f"{secrets.randbelow(900000) + 100000}"
+        super().save(*args, **kwargs)
 
     @property
-    def is_faculty_role(self):
-        return self.role == UserRole.FACULTY
-
-    @property
-    def is_student_role(self):
-        return self.role == UserRole.STUDENT
+    def is_valid(self):
+        return not self.is_used and timezone.now() < self.expires_at
