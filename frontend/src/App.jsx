@@ -41,6 +41,13 @@ import AccreditationDashboard from './pages/AccreditationDashboard';
 import AlumniNetworkPortal from './pages/AlumniNetworkPortal';
 import RegulatoryCompliances from './pages/RegulatoryCompliances';
 import AssetInventoryStudio from './pages/AssetInventoryStudio';
+import StudentScholarshipConsole from './pages/StudentScholarshipConsole';
+import VenueConflictDashboard from './pages/VenueConflictDashboard';
+import DisciplinaryTribunalConsole from './pages/DisciplinaryTribunalConsole';
+import LibraryInventoryAuditor from './pages/LibraryInventoryAuditor';
+import UgcCasAppraisalConsole from './pages/UgcCasAppraisalConsole';
+import ExamModerationConsole from './pages/ExamModerationConsole';
+import OutcomeAttainmentStudio from './pages/OutcomeAttainmentStudio';
 
 export const App = () => {
   return (
@@ -324,6 +331,62 @@ export const App = () => {
               element={
                 <MainLayout>
                   <AssetInventoryStudio />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/student-scholarship"
+              element={
+                <MainLayout>
+                  <StudentScholarshipConsole />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/venue-conflict"
+              element={
+                <MainLayout>
+                  <VenueConflictDashboard />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/disciplinary-board"
+              element={
+                <MainLayout>
+                  <DisciplinaryTribunalConsole />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/library-audit"
+              element={
+                <MainLayout>
+                  <LibraryInventoryAuditor />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/faculty-appraisal"
+              element={
+                <MainLayout>
+                  <UgcCasAppraisalConsole />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/exam-moderation"
+              element={
+                <MainLayout>
+                  <ExamModerationConsole />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/outcome-attainment"
+              element={
+                <MainLayout>
+                  <OutcomeAttainmentStudio />
                 </MainLayout>
               }
             />
