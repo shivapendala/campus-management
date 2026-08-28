@@ -1,0 +1,24 @@
+{
+  "name": "campus-management-system",
+  "version": "1.0.0",
+  "description": "Enterprise-Grade Campus Management System (EduCore) with React, Django REST Framework, and PostgreSQL",
+  "main": "main.py",
+  "scripts": {
+    "start": "python app.py",
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "preview": "npm --prefix frontend run preview",
+    "test": "pytest",
+    "lint": "flake8 backend/"
+  },
+  "keywords": [
+    "campus-management",
+    "university-erp",
+    "education",
+    "django",
+    "react",
+    "drf"
+  ],
+  "author": "EduCore Engineering Team",
+  "private": true
+}
